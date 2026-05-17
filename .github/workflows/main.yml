@@ -1,0 +1,29 @@
+name: Gerar Link de Avaliação
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  criar-link-avaliacao:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Comentar no PR com o link
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Substitua o link abaixo pelo link real da avaliação da sua escola
+            const linkAvaliacao = "https://seu-link-de-avaliacao.com";
+            
+            const msg = `Olá! 🎓 Por favor, não se esqueça de preencher a [Avaliação da Escola](${linkAvaliacao}) após revisar este trabalho.`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: msg
+            });
